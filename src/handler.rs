@@ -167,7 +167,7 @@ where
     /// The mouse delta, i.e. the relative mouse motion.
     pub mouse_delta: (f64, f64),
     ///key modifiers can tell if left or right keys.
-    pub modifiers: AHashSet<Modifier>,
+    pub modifiers: [bool; 8],
     ///key modifiers state can not tell if left or right keys.
     pub modifiers_state: ModifiersState,
     ///Current Mouse button presses in action. Please refer to the input_events
@@ -257,7 +257,7 @@ where
 
     ///Checks if a modifier is down.
     pub fn is_modifier_down(&self, modifier: Modifier) -> bool {
-        self.modifiers.contains(&modifier)
+        self.modifiers[modifier as usize]
     }
 
     ///Checks if the window is focused.
@@ -371,7 +371,7 @@ where
             mouse_position: None,
             last_mouse_position: None,
             mouse_delta: (0.0, 0.0),
-            modifiers: AHashSet::new(),
+            modifiers: [false; 8],
             modifiers_state: ModifiersState::default(),
             mouse_button_action: MouseButtonAction::None,
             mouse_action_timer: Instant::now(),
@@ -557,10 +557,11 @@ where
                     if state == ModifiersKeyState::Pressed {
                         self.input_events
                             .push_back(InputEvent::modifier(modifier, true));
-                        self.modifiers.insert(modifier);
-                    } else if self.modifiers.remove(&modifier) {
+                        self.modifiers[modifier as usize] = true;
+                    } else if self.modifiers[modifier as usize] {
                         self.input_events
                             .push_back(InputEvent::modifier(modifier, false));
+                        self.modifiers[modifier as usize] = false;
                     }
                 }
             }
