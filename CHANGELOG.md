@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## Unreleased
+## 0.6.2 (5. June, 2026)
+### Changed
+- Made modifiers a [bool; 8] to avoid AHashSet Overhead.
 
 ## 0.6.1 (5. March, 2026)
 ### Changed
